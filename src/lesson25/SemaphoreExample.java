@@ -4,10 +4,10 @@ import java.util.concurrent.Semaphore;
 
 public class SemaphoreExample {
     public static void main(String[] args) {
-        Semaphore semaphore = new Semaphore(1);
-//        public Semaphore(int permits, boolean fair)
-
-
+        Semaphore semaphore = new Semaphore(1, true);
+        new Thread(new IncrementThread(semaphore)).start();
+        new Thread(new DecrementThread(semaphore)).start();
+        new Thread(new DecrementThread(semaphore)).start();
     }
 }
 
