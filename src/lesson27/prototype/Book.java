@@ -30,7 +30,7 @@ public class Book implements IClone<Book> {
 
     @Override
     public Book cloneObj() {
-
-        return ;
+        return new Book(this.pageCount, this.title);
     }
 }
+
