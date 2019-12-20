@@ -12,22 +12,36 @@ public class MessageServer {
         this.port = port;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     public void start() throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(port)){
             System.out.println("Server started...");
             while (true){
                 Socket socket = serverSocket.accept();
                 connection = new Connection(socket);
-                printMessage(connection.readMessage());
-                connection.sendMessage(new Message("server", "сообщение получено"));
+                String clientCommand = connection.readMessage().getText();
+                System.out.println(clientCommand);
+                if ("time".equals(clientCommand)) {
+                    executeCommand(new TimeCommand(this));
+                }
+//                printMessage(connection.readMessage());
+//                connection.sendMessage(new Message("server", "сообщение получено"));
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+
     private void printMessage(Message message){
         System.out.println("получено сообщение: " + message);
+    }
+
+    public void executeCommand(ServerCommand command) {
+        command.execute();
     }
 
     public static void main(String[] args) {
